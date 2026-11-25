@@ -1,0 +1,157 @@
+/* Semantic roles — map to primitives per theme. Use these in UI, not raw primitives. */
+:root {
+  --surface-canvas: var(--ink-0);
+  --surface-elevated: var(--ink-0);
+  --surface-overlay: var(--ink-0);
+  --surface-subtle: var(--ink-100);
+  --surface-muted: var(--ink-100);
+  --surface-field: var(--ink-0);
+  --surface-field-muted: color-mix(in oklch, var(--ink-200) 30%, transparent);
+
+  --content-primary: var(--ink-1000);
+  --content-secondary: var(--ink-900);
+  --content-tertiary: var(--sand-700);
+  --content-on-primary: var(--ink-50);
+  --content-on-destructive: var(--ink-0);
+
+  --action-primary: var(--ink-900);
+  --action-primary-hover: color-mix(in oklch, var(--action-primary) 80%, transparent);
+  --action-destructive: var(--red-500);
+
+  --surface-destructive-subtle: color-mix(
+    in oklch,
+    var(--action-destructive) 10%,
+    transparent
+  );
+  --surface-destructive-subtle-hover: color-mix(
+    in oklch,
+    var(--action-destructive) 20%,
+    transparent
+  );
+  --border-destructive-focus: color-mix(
+    in oklch,
+    var(--action-destructive) 40%,
+    transparent
+  );
+  --ring-destructive-focus: color-mix(
+    in oklch,
+    var(--action-destructive) 20%,
+    transparent
+  );
+
+  --border-default: var(--sand-200);
+  --border-strong: var(--ink-200);
+  --border-field: var(--sand-200);
+  --border-focus: var(--sand-500);
+
+  --ring-focus: var(--sand-500);
+
+  --data-chart-1: var(--ink-300);
+  --data-chart-2: var(--sand-700);
+  --data-chart-3: var(--ink-600);
+  --data-chart-4: var(--ink-700);
+  --data-chart-5: var(--ink-800);
+
+  --sidebar-canvas: var(--ink-50);
+  --sidebar-content: var(--ink-1000);
+  --sidebar-action: var(--ink-900);
+  --sidebar-action-content: var(--ink-50);
+  --sidebar-accent-surface: var(--ink-100);
+  --sidebar-accent-content: var(--ink-900);
+  --sidebar-edge: var(--sand-200);
+  --sidebar-focus-ring: var(--sand-500);
+}
+
+.dark {
+  --surface-canvas: var(--ink-1000);
+  --surface-elevated: var(--ink-900);
+  --surface-overlay: var(--ink-900);
+  --surface-subtle: var(--ink-800);
+  --surface-muted: color-mix(in oklch, var(--ink-800) 50%, transparent);
+  --surface-field: var(--ink-alpha-150);
+  --surface-field-muted: var(--ink-alpha-150);
+
+  --content-primary: var(--ink-50);
+  --content-secondary: var(--ink-50);
+  --content-tertiary: var(--ink-400);
+  --content-on-primary: var(--ink-900);
+  --content-on-destructive: var(--ink-50);
+
+  --action-primary: var(--ink-200);
+  --action-primary-hover: color-mix(in oklch, var(--action-primary) 80%, transparent);
+  --action-destructive: var(--red-400);
+
+  --surface-destructive-subtle: color-mix(
+    in oklch,
+    var(--action-destructive) 20%,
+    transparent
+  );
+  --surface-destructive-subtle-hover: color-mix(
+    in oklch,
+    var(--action-destructive) 30%,
+    transparent
+  );
+  --border-destructive-focus: color-mix(
+    in oklch,
+    var(--action-destructive) 50%,
+    transparent
+  );
+  --ring-destructive-focus: color-mix(
+    in oklch,
+    var(--action-destructive) 40%,
+    transparent
+  );
+
+  --border-default: var(--ink-alpha-100);
+  --border-strong: var(--ink-alpha-100);
+  --border-field: var(--ink-alpha-100);
+  --border-focus: var(--sand-700);
+
+  --ring-focus: var(--sand-700);
+
+  --sidebar-canvas: var(--ink-900);
+  --sidebar-content: var(--ink-50);
+  --sidebar-action: var(--violet-500);
+  --sidebar-action-content: var(--ink-50);
+  --sidebar-accent-surface: var(--ink-800);
+  --sidebar-accent-content: var(--ink-50);
+  --sidebar-edge: var(--ink-alpha-100);
+  --sidebar-focus-ring: var(--sand-700);
+}
+
+/* shadcn / Tailwind compatibility — always alias, never duplicate raw color here */
+:root,
+.dark {
+  --background: var(--surface-canvas);
+  --foreground: var(--content-primary);
+  --card: var(--surface-elevated);
+  --card-foreground: var(--content-primary);
+  --popover: var(--surface-overlay);
+  --popover-foreground: var(--content-primary);
+  --primary: var(--action-primary);
+  --primary-foreground: var(--content-on-primary);
+  --secondary: var(--surface-subtle);
+  --secondary-foreground: var(--content-secondary);
+  --muted: var(--surface-muted);
+  --muted-foreground: var(--content-tertiary);
+  --accent: var(--surface-subtle);
+  --accent-foreground: var(--content-secondary);
+  --destructive: var(--action-destructive);
+  --border: var(--border-default);
+  --input: var(--border-field);
+  --ring: var(--ring-focus);
+  --chart-1: var(--data-chart-1);
+  --chart-2: var(--data-chart-2);
+  --chart-3: var(--data-chart-3);
+  --chart-4: var(--data-chart-4);
+  --chart-5: var(--data-chart-5);
+  --radius: var(--primitive-radius-md);
+  --sidebar: var(--sidebar-canvas);
+  --sidebar-foreground: var(--sidebar-content);
+  --sidebar-primary: var(--sidebar-action);
+  --sidebar-primary-foreground: var(--sidebar-action-content);
+  --sidebar-accent: var(--sidebar-accent-surface);
+  --sidebar-accent-foreground: var(--sidebar-accent-content);
+  --sidebar-border: var(--sidebar-edge);
+  --sidebar-ring: var(--sidebar-focus-ring);
+}
