@@ -8,9 +8,57 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
-## ui-sdk
+## AGENTS.md first
 
-Before using ui-sdk, follow the ui-sdk skill if it's installed, and read `node_modules/@ui-sdk/react/docs/llms.txt`. To build a new component, also search `node_modules/@ui-sdk/react/docs/core.md` by heading, and read `rendering.md` next to it.
+Agents and humans: **open this file before building the app.** Project rules in `.cursor/rules/` point here. Sections below cover Next.js, ui-sdk, tokens, the storyboard editor, lint, and UX skills.
+
+## ui-sdk (preferred for app UI)
+
+Use the **ui-sdk pattern** for interactive UI in `apps/web`: import from package entries (e.g. `@ui-sdk/react/button`, `@ui-sdk/react/field`), compose documented parts (Composition in each `docs/components/<name>.md`), wire state with `value` / `defaultValue` and `onValueChange`, and style with Tailwind on `data-slot` and state attributes — not raw `<button>`, bare `<input>`, or hand-rolled ARIA roles when ui-sdk ships the behavior.
+
+This is **not** the shadcn/Base UI kit in `packages/ui` (variants in the package, `onChange`, manual `Label` + `id`). Storyboard screens consume ui-sdk behaviors instead.
+
+Before using ui-sdk, follow the ui-sdk skill if it's installed, and read `node_modules/@ui-sdk/react/docs/llms.txt`.
+
+### Two paths (both are ui-sdk)
+
+ui-sdk docs teach the **kernel** (“Build a Component”: `definePrimitive` → `createParts` → style `data-slot`) and **shipped components** (import `@ui-sdk/react/toggle`, compose parts, style state attrs). This repo uses path 1 by default; use path 2 only when ui-sdk has no entry for the interaction.
+
+| Path | When | What you write | Docs / skill |
+| --- | --- | --- | --- |
+| **1 — Interface** | Toolbar, fields, listbox, dialogs, anything in the [build-interface table](.agents/skills/ui-sdk/references/build-interface.md) | Import `@ui-sdk/react/<name>`, nest parts per `docs/components/<name>.md`, `value` / `onValueChange`, product styles in TSX or `classes.ts` | `llms.txt` + each component page; [.agents/skills/ui-sdk/references/build-interface.md](.agents/skills/ui-sdk/references/build-interface.md) |
+| **2 — Custom component** | Behavior ui-sdk does not ship (custom canvas chrome, novel APG pattern) | `definePrimitive` in `apps/web/lib/...` (or similar), thin `createParts` wrapper under `apps/web/components/ui/`, optional `agent` key on the primitive | Search `node_modules/@ui-sdk/react/docs/core.md` by heading (“Build a Component”, “Compose Behaviors”), read `rendering.md`; [.agents/skills/ui-sdk/references/create-component.md](.agents/skills/ui-sdk/references/create-component.md) |
+
+**Same rules on both paths**
+
+- Behavior and ARIA live in the primitive layer; adapters render, they do not reinvent keyboard/focus/`aria-*`.
+- Style from **`data-slot`** and **state attributes** (`aria-pressed`, `data-pressed`, `aria-selected`, `data-open`, …), not parallel React state for accessibility.
+- **`render`** to swap the element (e.g. `Button` + `Link`); no `as` prop.
+- Name every control (`FieldLabel`, `Field name`, `aria-label` on icon-only tools) for agents and screen readers.
+
+**Storyboard today is path 1.** Example: pen/eraser tools are `@ui-sdk/react/toggle` + `Toolbar` (library primitives already defined inside `@ui-sdk`), styled via `classes.ts` (`data-pressed:`). You would only add path 2 for editor-specific widgets with no matching `@ui-sdk/react/*` entry.
+
+**Not ui-sdk:** adding shadcn primitives from `packages/ui` to storyboard when a path-1 entry exists.
+
+**Stack split**
+
+| Layer | Use |
+| --- | --- |
+| `apps/web` screens & `components/storyboard/` | **@ui-sdk/react** + `@ui-sdk/core` |
+| `packages/ui` | shadcn/Base UI shared kit, design tokens, global CSS (`@layer ui-sdk` in `globals.css`) |
+
+**Defaults for this product**
+
+- Actions → `Button` (links via `render={<Link />}`)
+- Form metadata → `Field` + `FieldLabel` + `Input` / `Textarea` / `NumberInput`
+- Filmstrip selection → `Listbox` + `ListboxItem` (horizontal `orientation`)
+- Canvas tools → `Toolbar` + `Toggle` / `ToggleGroup` + `ToolbarButton`
+- Editor split → `Resizable` + `ResizablePanel` + `ResizableHandle`
+- Inspector scroll → `ScrollArea` (name regions for agents)
+
+Keep every control named (`FieldLabel`, `aria-label` on icon-only controls). Prefer agent-ready flows in [agent-ready.md](.agents/skills/ui-sdk/references/agent-ready.md). After wiring a screen, add or extend a Vitest agent snapshot test under `apps/web/` per the ui-sdk skill.
+
+Do **not** add new shadcn primitives to storyboard screens when an ui-sdk entry exists. shadcn adds belong in `packages/ui` only for cross-app chrome not covered above.
 
 ## Ultracite
 
@@ -53,3 +101,19 @@ Tokens live in `packages/ui/src/styles/tokens/`. A good design system keeps huma
 - Body copy hierarchy: `text-foreground` / `text-content-secondary` / `text-content-tertiary` — never `--sand-700` or `#432154` in JSX.
 - Page background: `bg-background` or `bg-surface-canvas`.
 - Destructive soft button: `var(--surface-destructive-subtle)` pattern in components (see `button.tsx` destructive variant).
+
+## Storyboard app
+
+Editor domain UI lives under `apps/web/components/storyboard/` (not `packages/ui`). Types and fixtures belong in `apps/web/lib/storyboard/`. **Build with ui-sdk path 1** (see above), not shadcn compound shells. Shared tokens from `@workspace/ui/globals.css`.
+
+The previous v0 shell was removed for a clean restart. Target shape when you rebuild:
+
+| Area | ui-sdk direction |
+| --- | --- |
+| Hub / chrome | `Button`, links via `render` |
+| Shell layout | Compound layout (divs) + `Resizable` for canvas \| inspector |
+| Filmstrip | `Listbox` (horizontal) |
+| Inspector | `Field`, `Input`, `Textarea`, `NumberInput`, `ScrollArea` |
+| Canvas tools | `Toolbar`, `Toggle` / `ToggleGroup` |
+
+Add Vitest agent tests in `apps/web/components/storyboard/*.test.tsx` as screens land. Run `bun run test` in `apps/web`.

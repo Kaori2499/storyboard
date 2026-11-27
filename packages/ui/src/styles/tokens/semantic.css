@@ -1,16 +1,17 @@
 /* Semantic roles — map to primitives per theme. Use these in UI, not raw primitives. */
 :root {
-  --surface-canvas: var(--ink-0);
+  --surface-canvas: var(--ink-80);
   --surface-elevated: var(--ink-0);
   --surface-overlay: var(--ink-0);
   --surface-subtle: var(--ink-100);
   --surface-muted: var(--ink-100);
   --surface-field: var(--ink-0);
   --surface-field-muted: color-mix(in oklch, var(--ink-200) 30%, transparent);
+  --surface-stage: var(--ink-0);
 
   --content-primary: var(--ink-1000);
   --content-secondary: var(--ink-900);
-  --content-tertiary: var(--sand-700);
+  --content-tertiary: var(--ink-520);
   --content-on-primary: var(--ink-50);
   --content-on-destructive: var(--ink-0);
 
@@ -40,6 +41,8 @@
   );
 
   --border-default: var(--sand-200);
+  --border-element: var(--ink-200);
+  --border-divider: var(--ink-400);
   --border-strong: var(--ink-200);
   --border-field: var(--sand-200);
   --border-focus: var(--sand-500);
@@ -63,13 +66,14 @@
 }
 
 .dark {
-  --surface-canvas: var(--ink-1000);
+  --surface-canvas: var(--ink-950);
   --surface-elevated: var(--ink-900);
   --surface-overlay: var(--ink-900);
   --surface-subtle: var(--ink-800);
-  --surface-muted: color-mix(in oklch, var(--ink-800) 50%, transparent);
+  --surface-muted: var(--ink-800);
   --surface-field: var(--ink-alpha-150);
   --surface-field-muted: var(--ink-alpha-150);
+  --surface-stage: var(--ink-1000);
 
   --content-primary: var(--ink-50);
   --content-secondary: var(--ink-50);
@@ -103,6 +107,8 @@
   );
 
   --border-default: var(--ink-alpha-100);
+  --border-element: var(--ink-303030);
+  --border-divider: var(--ink-4c4c4c);
   --border-strong: var(--ink-alpha-100);
   --border-field: var(--ink-alpha-100);
   --border-focus: var(--sand-700);

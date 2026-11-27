@@ -1,6 +1,16 @@
-# shadcn/ui monorepo template
+# Storyboard
 
-This is a Next.js monorepo template with shadcn/ui.
+Next.js monorepo for a storyboard editor. Domain UI is rebuilt under `apps/web/components/storyboard/` (see [AGENTS.md](AGENTS.md)).
+
+## App routes
+
+- `/` — project hub
+
+Run `bun run dev` from the repo root.
+
+## shadcn/ui monorepo
+
+This app uses the shadcn/ui workspace layout.
 
 ## Adding components
 

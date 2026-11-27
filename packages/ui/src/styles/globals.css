@@ -1,10 +1,20 @@
+@layer ui-sdk;
+
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "./tokens/primitives.css";
 @import "./tokens/semantic.css";
+@import "./tokens/motion.css";
 
 @custom-variant dark (&:is(.dark *));
+@custom-variant fine-hover {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @slot;
+    }
+  }
+}
 @source "../../../apps/**/*.{ts,tsx}";
 @source "../../../components/**/*.{ts,tsx}";
 @source "../**/*.{ts,tsx}";
@@ -18,7 +28,10 @@
   --color-surface-elevated: var(--surface-elevated);
   --color-surface-subtle: var(--surface-subtle);
   --color-surface-field: var(--surface-field);
+  --color-surface-stage: var(--surface-stage);
   --color-border-default: var(--border-default);
+  --color-border-element: var(--border-element);
+  --color-border-divider: var(--border-divider);
   --color-action-destructive: var(--action-destructive);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -70,5 +83,8 @@
   }
   button:not(:disabled), [role="button"]:not(:disabled) {
     cursor: pointer;
+  }
+  kbd {
+    @apply rounded-sm border border-border bg-muted px-1.5 py-0.5 font-mono text-[10px] text-content-secondary shadow-[inset_0_-1px_0_0_var(--border-default)];
   }
 }

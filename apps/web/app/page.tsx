@@ -1,19 +1,42 @@
-import { Button } from "@workspace/ui/components/button"
+"use client";
+
+import { useState } from "react";
+
+import {
+  FilmReel,
+  FilmReelScreen,
+  FilmReelShot,
+} from "@/components/storyboard/film-reel";
+
+const shots = [
+  { id: "wide", label: "Wide" },
+  { id: "close", label: "Close" },
+  { id: "insert", label: "Insert" },
+  { id: "exit", label: "Exit" },
+];
 
 export default function Page() {
+  const [shotId, setShotId] = useState("wide");
+  const shot = shots.find((item) => item.id === shotId);
+
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
-        </div>
-        <div className="text-muted-foreground font-mono text-xs">
-          (Press <kbd>d</kbd> to toggle dark mode)
-        </div>
-      </div>
-    </div>
-  )
+    <main className="flex h-svh flex-col gap-2 p-2">
+      <FilmReelScreen>{shot?.label}</FilmReelScreen>
+      <FilmReel
+        aria-label="Shots"
+        onValueChange={(value) => {
+          if (value) {
+            setShotId(value);
+          }
+        }}
+        value={shotId}
+      >
+        {shots.map((item) => (
+          <FilmReelShot key={item.id} value={item.id}>
+            {item.label}
+          </FilmReelShot>
+        ))}
+      </FilmReel>
+    </main>
+  );
 }

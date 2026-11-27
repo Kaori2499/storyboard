@@ -1,0 +1,12 @@
+---
+description: Read AGENTS.md before building or changing this app
+alwaysApply: true
+---
+
+# AGENTS.md is the source of truth
+
+Before you implement features, change UI, add dependencies, or refactor in this repo, **read [AGENTS.md](AGENTS.md) at the project root** and follow every section that applies.
+
+If your task touches storyboard UI under `apps/web/`, also follow the **Storyboard app** and **ui-sdk** sections there — especially **Two paths**: default to path 1 (shipped `@ui-sdk/react/*` components); use path 2 (`definePrimitive` + `createParts`) only when no ui-sdk entry fits. Do not default to shadcn/Base UI in `packages/ui` for editor screens when path 1 covers the interaction.
+
+After substantive JS/TS edits, run `bun run check` or `bun run fix` from the repo root when Ultracite applies.
