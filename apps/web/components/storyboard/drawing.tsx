@@ -3,6 +3,7 @@
 import { createContext, use, useCallback, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 
+import type { ProjectFile } from "@/lib/storyboard/project";
 import type { DrawTool, Stroke } from "@/lib/storyboard/strokes";
 
 interface DrawingState {
@@ -33,34 +34,42 @@ const useDrawing = () => {
 
 const DrawingProvider = ({
   children,
+  onProjectChange,
+  project,
   shotId,
 }: {
   children: ReactNode;
+  onProjectChange: (project: ProjectFile) => void;
+  project: ProjectFile;
   shotId: string;
 }) => {
   const [tool, setTool] = useState<DrawTool>("pencil");
-  const [drawings, setDrawings] = useState<Record<string, Stroke[]>>({});
+  const strokes = useMemo(
+    () => project.shots.find((shot) => shot.id === shotId)?.strokes ?? [],
+    [project, shotId]
+  );
 
   const addStroke = useCallback(
     (stroke: Stroke) => {
-      setDrawings((current) => ({
-        ...current,
-        [shotId]: [...(current[shotId] ?? []), stroke],
-      }));
+      onProjectChange({
+        ...project,
+        shots: project.shots.map((shot) =>
+          shot.id === shotId
+            ? { ...shot, strokes: [...shot.strokes, stroke] }
+            : shot
+        ),
+      });
     },
-    [shotId]
+    [onProjectChange, project, shotId]
   );
 
   const value = useMemo<DrawingContextValue>(
     () => ({
-      state: {
-        tool,
-        strokes: drawings[shotId] ?? [],
-      },
+      state: { tool, strokes },
       actions: { addStroke, setTool },
       meta: {},
     }),
-    [addStroke, drawings, shotId, tool]
+    [addStroke, strokes, tool]
   );
 
   return <DrawingContext value={value}>{children}</DrawingContext>;

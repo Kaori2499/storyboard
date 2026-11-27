@@ -4,12 +4,14 @@ import { Listbox, ListboxItem } from "@ui-sdk/react/listbox";
 import type { ListboxProps } from "@ui-sdk/react/listbox";
 import { cn } from "@workspace/ui/lib/utils";
 import { useEffect, useRef } from "react";
-import type { ComponentProps } from "react";
+import type { ComponentProps, ReactNode } from "react";
 
 type FilmReelProps = Omit<
   Extract<ListboxProps<string, false>, { multiple?: false }>,
   "multiple" | "orientation"
->;
+> & {
+  bar?: ReactNode;
+};
 
 const lineHeight = 16;
 
@@ -31,7 +33,7 @@ const FilmReelBar = ({ className, ...props }: ComponentProps<"div">) => (
   />
 );
 
-const FilmReel = ({ className, children, ...props }: FilmReelProps) => {
+const FilmReel = ({ bar, className, children, ...props }: FilmReelProps) => {
   const scrollerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -79,7 +81,9 @@ const FilmReel = ({ className, children, ...props }: FilmReelProps) => {
       >
         {children}
       </Listbox>
-      <FilmReelBar className="border-border-element border-t" />
+      <FilmReelBar className="border-border-element border-t">
+        {bar}
+      </FilmReelBar>
     </div>
   );
 };
@@ -119,9 +123,31 @@ const FilmReelShot = ({
   </ListboxItem>
 );
 
+const FilmReelProject = ({
+  className,
+  children,
+  ...props
+}: ComponentProps<typeof ListboxItem>) => (
+  <ListboxItem
+    {...props}
+    className={cn(
+      filmReelWireframe,
+      "border-border-element text-muted-foreground focus-visible:outline-ring data-[selected]:bg-foreground data-[selected]:text-primary-foreground aspect-video h-full shrink-0 text-xs font-medium focus-visible:outline-2",
+      className
+    )}
+  >
+    {(state) => (
+      <FilmReelBar>
+        {typeof children === "function" ? children(state) : children}
+      </FilmReelBar>
+    )}
+  </ListboxItem>
+);
+
 export {
   FilmReel,
   FilmReelBar,
+  FilmReelProject,
   FilmReelScreen,
   FilmReelShot,
   FilmReelWireframe,

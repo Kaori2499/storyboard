@@ -6,6 +6,7 @@ import { expect, test, vi } from "vitest";
 import {
   FilmReel,
   FilmReelBar,
+  FilmReelProject,
   FilmReelScreen,
   FilmReelShot,
 } from "./film-reel";
@@ -114,6 +115,20 @@ test("screen, reel, and shot put their label in a bottom bar", () => {
   expect(wide.querySelector("[data-slot='film-reel-bar']")?.textContent).toBe(
     "Wide"
   );
+});
+
+test("a project label sits in a bar without a top border", () => {
+  render(
+    <FilmReel aria-label="Projects" defaultValue="demo">
+      <FilmReelProject value="demo">Demo</FilmReelProject>
+    </FilmReel>
+  );
+
+  const demo = screen.getByRole("option", { name: "Demo" });
+  const bar = demo.querySelector("[data-slot='film-reel-bar']");
+
+  expect(bar?.textContent).toBe("Demo");
+  expect(bar?.className.includes("border-t")).toBe(false);
 });
 
 test("the screen shows the selected shot", () => {

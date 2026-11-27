@@ -10,7 +10,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## AGENTS.md first
 
-Agents and humans: **open this file before building the app.** Project rules in `.cursor/rules/` point here. Sections below cover Next.js, ui-sdk, tokens, the storyboard editor, lint, and UX skills.
+Agents and humans: **open this file before building the app.** Project rules in `.cursor/rules/` point here. Sections below cover Next.js, ui-sdk, tokens, the storyboard editor, errors, lint, and UX skills.
 
 ## ui-sdk (preferred for app UI)
 
@@ -59,6 +59,23 @@ ui-sdk docs teach the **kernel** (“Build a Component”: `definePrimitive` →
 Keep every control named (`FieldLabel`, `aria-label` on icon-only controls). Prefer agent-ready flows in [agent-ready.md](.agents/skills/ui-sdk/references/agent-ready.md). After wiring a screen, add or extend a Vitest agent snapshot test under `apps/web/` per the ui-sdk skill.
 
 Do **not** add new shadcn primitives to storyboard screens when an ui-sdk entry exists. shadcn adds belong in `packages/ui` only for cross-app chrome not covered above.
+
+## Errors (neverthrow)
+
+Expected failures are values, not throws. In `apps/web`, use [`neverthrow`](https://github.com/supermacro/neverthrow) and follow the neverthrow skill when it is installed.
+
+| Kind | Return |
+| --- | --- |
+| Sync check that can fail (parse, validation) | `Result` via `ok` / `err` |
+| File, HTTP, or other async failure | `ResultAsync` via `okAsync` / `errAsync` / `fromPromise` |
+| A library that throws | Wrap it once with `fromThrowable` or `fromPromise`, then stay on `Result` |
+
+- Give the error a discriminated `kind` (`invalid`, `not_found`, `io`), not a bare string.
+- `map` when the next step cannot fail. `andThen` when it returns another `Result`. Do not nest `Result<Result<…>>`.
+- Unwrap once at the edge with `match`. Do not ignore a `Result`. `_unsafeUnwrap` is for tests only.
+- `throw` is for a programmer mistake. A bad project file, a missing id, or a failed read is an `err`.
+
+`parseProject`, `readProject`, and `writeProject` in `apps/web/lib/storyboard/` are the reference. The web ESLint config uses a Babel parser, so `eslint-plugin-neverthrow` is not wired; still consume every `Result`.
 
 ## Ultracite
 

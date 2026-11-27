@@ -2,15 +2,24 @@ import { render, screen } from "@testing-library/react";
 import { createAgent } from "@ui-sdk/react/agent";
 import { expect, test } from "vitest";
 
+import type { ProjectFile } from "@/lib/storyboard/project";
+
 import { DrawTools } from "./draw-tools";
 import { DrawingProvider } from "./drawing";
 import { FilmReelBar } from "./film-reel";
+
+const project: ProjectFile = {
+  version: 1,
+  id: "demo",
+  title: "Demo",
+  shots: [{ id: "wide", label: "Wide", strokes: [] }],
+};
 
 const agent = createAgent();
 
 test("an agent can find the pencil and eraser in the screen bar", () => {
   render(
-    <DrawingProvider shotId="wide">
+    <DrawingProvider onProjectChange={() => {}} project={project} shotId="wide">
       <FilmReelBar>
         Wide
         <DrawTools />
