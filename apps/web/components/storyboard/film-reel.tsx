@@ -94,9 +94,7 @@ const FilmReelScreen = ({
     aria-label="Selected shot"
     className={cn(filmReelWireframe, "min-h-0 w-full flex-1", className)}
   >
-    <FilmReelBar className="border-border-element border-t">
-      {children}
-    </FilmReelBar>
+    {children}
   </output>
 );
 

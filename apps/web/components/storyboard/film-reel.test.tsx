@@ -3,7 +3,12 @@ import { createAgent } from "@ui-sdk/react/agent";
 import { useState } from "react";
 import { expect, test, vi } from "vitest";
 
-import { FilmReel, FilmReelScreen, FilmReelShot } from "./film-reel";
+import {
+  FilmReel,
+  FilmReelBar,
+  FilmReelScreen,
+  FilmReelShot,
+} from "./film-reel";
 
 const shots = [
   { id: "wide", label: "Wide" },
@@ -65,7 +70,11 @@ const ScreenedReel = () => {
 
   return (
     <>
-      <FilmReelScreen>{label}</FilmReelScreen>
+      <FilmReelScreen>
+        <FilmReelBar className="border-border-element border-t">
+          {label}
+        </FilmReelBar>
+      </FilmReelScreen>
       <FilmReel
         aria-label="Shots"
         onValueChange={(value) => {
